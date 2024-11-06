@@ -25,9 +25,9 @@ Tempo: 1m49,598s
 ### Versão OpenMP
 
 Tempo 1 thread : 0m51,206s
-Tempo 2 threads:
-Tempo 4 threads:
-Tempo 8 threads:
+Tempo 2 threads: 0m14.845s
+Tempo 4 threads: 0m11.373s
+Tempo 8 threads: 0m16.545s
 
 ### Versão MPI
 
