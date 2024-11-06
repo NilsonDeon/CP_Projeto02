@@ -7,7 +7,7 @@ O código original não foi desenvolvido pelo grupo.
 Ele está disponível no link: https://github.com/alexandremstf/neural-network/tree/master. Autor: Alexandre Magno
 
 ## Como executar
-Para compilar o código: make all
+Para compilar o código: make all VERSION=x, em que x pode ser: Sequencial, OpenMP ou MPI
 Para executar o código: ./neuralnetwork
 
 ## Explicação da aplicação
@@ -20,11 +20,11 @@ O código foi executado em um computador com as seguintes especificações:
 
 ### Versão Sequencial
 
-Tempo: 1m49,598s
+Tempo:
 
 ### Versão OpenMP
 
-Tempo 1 thread : 0m51,206s
+Tempo 1 thread :
 Tempo 2 threads:
 Tempo 4 threads:
 Tempo 8 threads:

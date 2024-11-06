@@ -23,10 +23,8 @@ private:
 public:
 	Dataset();
     void saveOutputLog();
-    void loadInputOutputData(int, int, string); // load input and output in same file
-
+    void loadInputOutputData(int, int, string);
     void normalize(vector<vector<double>>);
-
     void printMatrix(vector<vector<double>> v);
     void printVector(vector<double> v);
 

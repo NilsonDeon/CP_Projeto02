@@ -13,60 +13,60 @@ namespace Neural {
 class Network {
 
 struct ForwardPropagation {
-	vector<double> sum_input_weight;
-	vector<double> sum_output_weigth;
-	vector<double> sum_input_weight_ativation;
-	vector<double> output;
+    vector<double> sum_input_weight; // Armazena a soma dos produtos entre as entradas e os pesos das entradas para cada neurônio na camada oculta
+    vector<double> sum_output_weigth; // Armazena a soma dos produtos entre as saídas da camada oculta e os pesos de saída para cada neurônio na camada de saída
+    vector<double> sum_input_weight_ativation; // Armazena o resultado da função de ativação aplicada ao sum_input_weight
+    vector<double> output; // Armazena a saída final da rede neural
 
-	ForwardPropagation(){}
-	ForwardPropagation(int size_input, int size_output) { 
-		sum_input_weight.resize(size_input);
-	    sum_output_weigth.resize(size_output);
-    	fill(sum_input_weight.begin(), sum_input_weight.end(), 0);
-		fill(sum_output_weigth.begin(), sum_output_weigth.end(), 0);
+    ForwardPropagation(){}
+    ForwardPropagation(int size_input, int size_output) { 
+        sum_input_weight.resize(size_input);
+        sum_output_weigth.resize(size_output);
+        fill(sum_input_weight.begin(), sum_input_weight.end(), 0);
+        fill(sum_output_weigth.begin(), sum_output_weigth.end(), 0);
     }
 }; 
 
 struct BackPropagation {
-	vector<double> delta_output_sum;
-	vector<double> delta_input_sum;
+    vector<double> delta_output_sum; // Armazena o erro na saída multiplicado pela derivada da função de ativação na saída
+    vector<double> delta_input_sum; // Armazena o erro na entrada (calculado com base no delta_output_sum e nos pesos de saída) multiplicado pela derivada da função de ativação na entrada
 
-	BackPropagation(){}
-	BackPropagation(int size_input) { 
-		delta_input_sum.resize(size_input);
-    	fill(delta_input_sum.begin(), delta_input_sum.end(), 0);
+    BackPropagation(){}
+    BackPropagation(int size_input) { 
+        delta_input_sum.resize(size_input);
+        fill(delta_input_sum.begin(), delta_input_sum.end(), 0);
     }
 };
 
 struct network {
-	int epoch = 0;
-	int hidden_layer = 0;
-	double learning_rate = 0;
-	vector<vector<double>> weight_input;
-	vector<vector<double>> weight_output;
+    int epoch = 0; // Número de épocas necessárias para treinar a melhor rede
+    int hidden_layer = 0; // Tamanho da camada oculta da melhor rede
+    double learning_rate = 0; // Taxa de aprendizado da melhor rede
+    vector<vector<double>> weight_input; // Pesos de entrada da melhor rede
+    vector<vector<double>> weight_output; // Pesos de saída da melhor rede
 } ;
 
 private:
-	int input_layer_size;
-	int output_layer_size;
-	int hidden_layer_size;
+    int input_layer_size; // Tamanho da camada de entrada
+    int output_layer_size; // Tamanho da camada de saída
+    int hidden_layer_size; // Tamanho da camada oculta
 
-	vector<vector<double>> input;
-	vector<vector<double>> output;
-	vector<vector<double>> weight_input;
-	vector<vector<double>> weight_output;
-	
-	network best_network;
+    vector<vector<double>> input; // Dados de entrada
+    vector<vector<double>> output; // Dados de saída
+    vector<vector<double>> weight_input; // Pesos de entrada da rede atual
+    vector<vector<double>> weight_output; // Pesos de saída da rede atual
+    
+    network best_network; // Melhor rede encontrada durante o treinamento
 
-	int epoch;
-	int max_epoch;
+    int epoch; // Número atual de épocas
+    int max_epoch; // Número máximo de épocas permitidas para o treinamento
 
-	int correct_output;
-	int hit_percent;
+    int correct_output; // Contador do número de previsões corretas
+    int hit_percent; // Porcentagem de acertos atual
 
-	double desired_percent;
-	double learning_rate;
-	double error_tolerance;
+    double desired_percent; // Porcentagem de acertos desejada
+    double learning_rate; // Taxa de aprendizado atual
+    double error_tolerance; // Tolerância de erro para considerar uma previsão como correta
 
 public:
 	Network();

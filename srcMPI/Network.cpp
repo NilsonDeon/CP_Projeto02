@@ -1,17 +1,15 @@
 #include "../include/Network.hpp"
 
-#define NUM_THREADS 1
-
 namespace Neural{
 
 Network::Network(){
 }
 
 Network::Network(vector<vector<double>> user_input, vector<vector<double>> user_output){
-   
+
     setInput(user_input);
     setOutput(user_output);
-    output_layer_size = 1; // para teste
+    output_layer_size = 3;
 
 }
 
@@ -29,7 +27,7 @@ void Network::setParameter( int user_max_epoch, int user_desired_percent, double
 
 void Network::run(){
 
-    #pragma omp parallel for num_threads(NUM_THREADS)
+    //#pragma omp parallel for num_threads(NUM_THREADS)
     for (unsigned int data_row = 0; data_row < input.size(); data_row++){
         ForwardPropagation forward = forwardPropagation(input[data_row]);
         hitRateCount(forward.output, data_row);            
@@ -38,7 +36,7 @@ void Network::run(){
 }
 
 void Network::trainingClassification(){
-    
+
     for (epoch = 0; epoch < max_epoch && hit_percent < desired_percent; epoch++) {
         for (unsigned int data_row = 0; data_row < input.size(); data_row++){
             ForwardPropagation forward = forwardPropagation(input[data_row]);
@@ -46,49 +44,19 @@ void Network::trainingClassification(){
         }
         run();
     }
-    cout << hidden_layer_size << "\t" << learning_rate << "\t" << hit_percent << "% \t" << epoch << endl;
-}
 
-void Network::trainingTemporal(){
-    
-    for (epoch = 0; epoch < max_epoch && hit_percent < desired_percent; epoch++) {
-
-        #pragma omp parallel for num_threads(NUM_THREADS)
-        for (unsigned int data_row = 0; data_row < input.size() - 1; data_row++) {
-            ForwardPropagation forward = forwardPropagation(input[data_row]);
-            backPropagation(forward, input[data_row], input[data_row + 1]);
-        }
- 
-        #pragma omp parallel for num_threads(NUM_THREADS)
-        for (unsigned int data_row = 0; data_row < input.size() - 1; data_row++) {
-            ForwardPropagation forward = forwardPropagation(input[data_row]);
-            
-            if ( abs(forward.output[1] - input[data_row + 1][1]) < error_tolerance)
-                correct_output++;
-        }
-
-        hit_percent = (correct_output * 100) / (input.size());
-        correct_output = 0;
-    }
-
-
-    #pragma omp parallel for num_threads(NUM_THREADS)
-    for (unsigned int data_row = 0; data_row < input.size() - 1; data_row++) {
-        ForwardPropagation forward = forwardPropagation(input[data_row]);
-        cout << input[data_row + 1][1] << " -- " << forward.output[1] << endl;
-    }
-
-    cout << hidden_layer_size << "\t" << learning_rate << "\t" << hit_percent << "% \t" << epoch << endl;
+    cout << "Hidden Layer Size: " << hidden_layer_size 
+        << "\tLearning Rate: " << learning_rate 
+        << "\tHit Percent: " << hit_percent << "%" 
+        << "\tEpoch: " << epoch << endl;
 }
 
 void Network::autoTraining(int hidden_layer_limit, double learning_rate_increase){
 
-    #pragma omp parallel for num_threads(NUM_THREADS)
     for (hidden_layer_size = 3; hidden_layer_size <= hidden_layer_limit; hidden_layer_size++){
         for (learning_rate = learning_rate_increase; learning_rate <= 1; learning_rate = learning_rate + learning_rate_increase){
             initializeWeight();
-            //trainingClassification();
-            trainingTemporal();
+            trainingClassification();
             if (epoch < best_network.epoch){
                 best_network.epoch = epoch;
                 best_network.learning_rate = learning_rate;
@@ -99,14 +67,15 @@ void Network::autoTraining(int hidden_layer_limit, double learning_rate_increase
         }
     }
 
-    cout << "Best Network: " << best_network.hidden_layer << "\t" << best_network.learning_rate << "\t" << best_network.epoch << endl;
+    cout << "Best Network --> Hidden Layer Size: " << best_network.hidden_layer 
+        << "\tLearning Rate: " << best_network.learning_rate 
+        << "\tEpoch: " << best_network.epoch << endl;
     
     epoch = best_network.epoch;
     learning_rate = best_network.learning_rate;
     hidden_layer_size = best_network.hidden_layer;
     weight_input = best_network.weight_input;
     weight_output = best_network.weight_output;
-
 }
 
 Network::ForwardPropagation Network::forwardPropagation(vector<double> input_line){
@@ -115,26 +84,26 @@ Network::ForwardPropagation Network::forwardPropagation(vector<double> input_lin
 
     ForwardPropagation forward(hidden_layer_size, output_layer_size);
 
-// somatório dos produtos entre, entrada e peso das entradas em cada neurônio da camada oculta
+    // somatório dos produtos entre, entrada e peso das entradas em cada neurônio da camada oculta
     for (int i = 0; i < hidden_layer_size; i++ ){
         for (int j = 0; j < input_layer_size; j++ ){
             forward.sum_input_weight[i] += input_line[j] * weight_input[j][i];
         }
     }
 
-// aplica função de ativação, em cada somatório encontrado, ou em cada neurônio da camada oculta  (sigmoid)
+    // aplica função de ativação, em cada somatório encontrado, ou em cada neurônio da camada oculta  (sigmoid)
     for (int i = 0; i < hidden_layer_size; i++ ){
         forward.sum_input_weight_ativation.push_back(sigmoid(forward.sum_input_weight[i]));
     }
 
-// somatório dos produtos entre, o somatório dos neurônios na camada oculta e o peso das saídas
+    // somatório dos produtos entre, o somatório dos neurônios na camada oculta e o peso das saídas
     for (int i = 0; i < output_layer_size; i++ ){
         for (int j = 0; j < hidden_layer_size; j++ ){
             forward.sum_output_weigth[i] += forward.sum_input_weight_ativation[j] * weight_output[j][i];
         }
     }
 
-// aplica função de ativação em cada somatório encontrado, ou em cada nerônio da camada de saída (sigmoidPrime), saída da rede neural
+    // aplica função de ativação em cada somatório encontrado, ou em cada nerônio da camada de saída (sigmoidPrime), saída da rede neural
     for (int i = 0; i < output_layer_size; i++ ){
         forward.output.push_back(sigmoid(forward.sum_output_weigth[i]));
     }

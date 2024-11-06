@@ -1,4 +1,5 @@
 #include "../include/Dataset.hpp"
+#include <iomanip>
 
 namespace Neural {
 
@@ -11,8 +12,7 @@ void Dataset::saveOutputLog(){
 void Dataset::printMatrix(vector<vector<double>> v){
     for (unsigned int i = 0; i < v.size(); i++){
         for (unsigned int j = 0; j < v[i].size(); j++){
-            //cout << round(v[i][j]) << "\t"; 
-            cout << (v[i][j]) << "\t";
+            cout << fixed << setprecision(2) << v[i][j] << "\t";
         }
         cout << endl;
     }
@@ -21,8 +21,7 @@ void Dataset::printMatrix(vector<vector<double>> v){
 
 void Dataset::printVector(vector<double> v){
     for (unsigned int i = 0; i < v.size(); i++){
-        //cout << round(v[i]) << "\t";
-        cout << (v[i]) << "\t";
+        cout << fixed << setprecision(2) << v[i] << "\t";
     }
     cout << endl;
 }
