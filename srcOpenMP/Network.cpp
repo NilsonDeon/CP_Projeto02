@@ -51,7 +51,6 @@ namespace Neural
             for (unsigned int data_row = 0; data_row < input.size(); data_row++)
             {
                 ForwardPropagation forward = forwardPropagation(input[data_row]);
-#pragma omp critical
                 backPropagation(forward, input[data_row], output[data_row]);
             }
             run();
