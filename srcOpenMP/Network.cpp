@@ -95,7 +95,6 @@ Network::ForwardPropagation Network::forwardPropagation(vector<double> input_lin
     }
 
     // aplica função de ativação, em cada somatório encontrado, ou em cada neurônio da camada oculta  (sigmoid)
-    #pragma omp parallel for num_threads(NUM_THREADS)
     for (int i = 0; i < hidden_layer_size; i++ ){
         forward.sum_input_weight_ativation.push_back(sigmoid(forward.sum_input_weight[i]));
     }
@@ -109,7 +108,6 @@ Network::ForwardPropagation Network::forwardPropagation(vector<double> input_lin
     }
 
     // aplica função de ativação em cada somatório encontrado, ou em cada nerônio da camada de saída (sigmoidPrime), saída da rede neural
-    #pragma omp parallel for num_threads(NUM_THREADS)
     for (int i = 0; i < output_layer_size; i++ ){
         forward.output.push_back(sigmoid(forward.sum_output_weigth[i]));
     }
@@ -123,12 +121,12 @@ void Network::backPropagation(ForwardPropagation forward, vector<double> input_l
     
     BackPropagation back(hidden_layer_size);
 
-// erro entre a saída esperada e a calculada, multiplicado pela taxa de mudança da função de ativação no somatório de saída (derivada)
+    // erro entre a saída esperada e a calculada, multiplicado pela taxa de mudança da função de ativação no somatório de saída (derivada)
     for (int i = 0; i < output_layer_size; i++ ){
         back.delta_output_sum.push_back((output_line[i] - forward.output[i]) * sigmoidPrime(forward.sum_output_weigth[i]));
     }
 
-// erro da saída multiplicado pelos pesos de saída, aplicando a taxa de mudança da função de ativação no somatório da camada oculta (derivada)
+    // erro da saída multiplicado pelos pesos de saída, aplicando a taxa de mudança da função de ativação no somatório da camada oculta (derivada)
     for (int i = 0; i < hidden_layer_size; i++ ){
         for (int j = 0; j < output_layer_size; j++ ){
             back.delta_input_sum[i] += back.delta_output_sum[j] * weight_output[i][j];
@@ -136,14 +134,14 @@ void Network::backPropagation(ForwardPropagation forward, vector<double> input_l
         back.delta_input_sum[i] *= sigmoidPrime(forward.sum_input_weight[i]);
     }
 
-// corrigindo os valores dos pesos de saída
+    // corrigindo os valores dos pesos de saída
     for (unsigned int i = 0; i < weight_output.size(); i++){
         for (unsigned int j = 0; j < weight_output[i].size(); j++){
             weight_output[i][j] += back.delta_output_sum[j] * forward.sum_input_weight_ativation[i] * learning_rate;
         }        
     }
 
-// corrigindo os valores dos pesos de entrada
+    // corrigindo os valores dos pesos de entrada
     for (unsigned int i = 0; i < weight_input.size(); i++){
         for (unsigned int j = 0; j < weight_input[i].size(); j++){
             weight_input[i][j] += back.delta_input_sum[j] * input_line[i] * learning_rate;
@@ -153,6 +151,7 @@ void Network::backPropagation(ForwardPropagation forward, vector<double> input_l
 
 void Network::hitRateCount(vector<double> neural_output, unsigned int data_row){
 
+    #pragma omp parallel for reduction(+:correct_output) num_threads(NUM_THREADS)
     for (int i = 0; i < output_layer_size; i++ ){
         if (abs(neural_output[i] - output[data_row][i]) < error_tolerance)
             correct_output++;
@@ -172,6 +171,7 @@ void Network::initializeWeight(){
     
     srand((unsigned int) time(0));
     
+    #pragma omp parallel for num_threads(NUM_THREADS)
     for (unsigned int i = 0; i < weight_input.size(); i++ ){
         weight_input[i].clear();
         for ( int j = 0; j < hidden_layer_size; j++ ){
@@ -179,6 +179,7 @@ void Network::initializeWeight(){
         }
     }
 
+    #pragma omp parallel for num_threads(NUM_THREADS)
     for (unsigned int i = 0; i < weight_output.size(); i++ ){
         weight_output[i].clear();        
         for ( int j = 0; j < output_layer_size; j++ ){
