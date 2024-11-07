@@ -1,6 +1,6 @@
 #include "../include/Network.hpp"
 
-#define NUM_THREADS 8
+#define NUM_THREADS 4
 
 namespace Neural
 {

@@ -1,19 +1,18 @@
-COMPILER = g++ -std=c++11 -Wall -g
-EXEC_PROG = neuralnetwork
-BINARIES = $(EXEC_PROG)
-
 # Compila a versão sequencial por padrao
 VERSION = Sequencial
+COMPILER = mpic++ -std=c++11 -Wall -g
+
 
 ifeq ($(VERSION),OpenMP)
-	COMPILER += -fopenmp
 	SRC_DIR = srcOpenMP
 else ifeq ($(VERSION),MPI)
-	COMPILER += -lmpi
 	SRC_DIR = srcMPI
 else
 	SRC_DIR = srcSequencial
 endif
+
+EXEC_PROG = neuralnetwork
+BINARIES = $(EXEC_PROG)
 
 SOURCES := $(shell find $(SRC_DIR) -name '*.cpp')
 OBJECTS = main.o $(SOURCES:.cpp=.o)
