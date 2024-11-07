@@ -31,6 +31,6 @@ Tempo 8 threads:
 
 ### Versão MPI
 
-Tempo 1 processo  e 4 threads:
-Tempo 2 processos e 2 threads:
-Tempo 4 processo  e 0 threads:
+Tempo 1 processo  e 4 threads: 0m15.664s
+Tempo 2 processos e 2 threads: 0m17.203s
+Tempo 4 processo  e 0 threads: 0m20.643s
