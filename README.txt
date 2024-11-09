@@ -27,17 +27,17 @@ O código foi executado em um computador com as seguintes especificações:
 
 ### Versão Sequencial
 
-Tempo: 0m24,942s
+Tempo: 0m29,424s
 
 ### Versão OpenMP
 
-Tempo 1 thread :
-Tempo 2 threads:
-Tempo 4 threads:
-Tempo 8 threads:
+Tempo 1 thread : 0m26,720s
+Tempo 2 threads: 0m15,170s
+Tempo 4 threads: 0m8,984s
+Tempo 8 threads: 0m5,292s
 
 ### Versão MPI
 
-Tempo 1 processo  e 4 threads:
-Tempo 2 processos e 2 threads:
-Tempo 4 processo  e 0 threads:
+Tempo 1 processo  e 4 threads: 0m20,800s
+Tempo 2 processos e 2 threads: 0m12,479s
+Tempo 4 processo  e 1 thread : 0m9,553s
