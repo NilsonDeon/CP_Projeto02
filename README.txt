@@ -1,68 +1,119 @@
-Projeto 01 - Computação Paralela
-Grupo 02: Gabriel Vargas, Leticia Americano, Nilson Deon e Olga Camilla
-Data: 11/2024
+# Projeto 01 - Computação Paralela
 
-## Referência
-O código original não foi desenvolvido pelo grupo.
-Ele está disponível no link: https://github.com/alexandremstf/neural-network/tree/master. Autor: Alexandre Magno
+**Grupo:**  
+- Gabriel Vargas  
+- Leticia Americano  
+- Nilson Deon  
+- Olga Camilla  
 
-## Como executar
-Para compilar o código: 
-    Codigo Sequencial: make all VERSION=Sequencial
-    Codigo OpenMP    : make all VERSION=OpenMP NUM_THREADS=x, sendo x o número de threads desejadas (1, 2, 4 ou 8)
-    Codigo MPI       : make all VERSION=MPI NUM_THREADS=x, sendo x o número de threads desejadas (1, 2, 4 ou 8)
+**Data:** Novembro/2024  
 
-Para executar o código: 
-    Codigo Sequencial: time ./neuralnetwork
-    Codigo OpenMP    : time ./neuralnetwork
-    Codigo MPI       : time mpiexec -np y ./neuralnetwork, sendo y o número de processos desejadas (1, 2 ou 4)
+---
 
-## Explicação da aplicação
+## Índice
+1. [Descrição](#descrição)
+2. [Estrutura do Projeto](#estrutura-do-projeto)
+3. [Como Executar](#como-executar)
+    - [Compilação](#compilação)
+    - [Execução](#execução)
+4. [Dependências](#dependências)
+5. [Explicação da Aplicação](#explicação-da-aplicação)
+    - [Dataset: Iris](#dataset-iris)
+    - [Perceptron com Backpropagation](#perceptron-com-backpropagation)
+    - [Versões de Execução](#versões-de-execução)
+6. [Alterações no Código](#alterações-no-código)
+7. [Conclusão](#conclusão)
 
-(feito pelo GPT) -> ARRUMAR:
+---
 
-O código é uma implementação de uma rede neural para resolver o problema clássico de classificação do conjunto de dados Iris. O conjunto de dados Iris é um conjunto de dados multivariados introduzido pelo estatístico e biólogo britânico Ronald Fisher em seu artigo de 1936 "The use of multiple measurements in taxonomic problems". É talvez o melhor conhecido banco de dados a ser encontrado na literatura de reconhecimento de padrões.
+## Descrição
+Este projeto é uma aplicação de redes neurais treinada com o dataset Iris. Utilizamos três versões para a execução do algoritmo de Perceptron com backpropagation: sequencial, paralela com OpenMP e distribuída com MPI, explorando diferentes abordagens de paralelização para otimizar o treinamento da rede neural.
 
-O conjunto de dados contém 150 instâncias, onde cada instância é uma amostra de medidas das características de uma flor de íris. Cada amostra contém quatro atributos (comprimento e largura das sépalas e pétalas) e uma classe, que é o tipo específico de íris (setosa, versicolor ou virginica).
+O código original não foi desenvolvido pelo grupo e está disponível no repositório: alexandremstf/neural-network (Autor: Alexandre Magno).
 
-A rede neural usa o algoritmo de backpropagation para aprender a classificar corretamente as flores de íris com base em suas medidas. A rede é treinada para atingir uma taxa de acerto desejada de 95% com uma tolerância máxima de erro de 0.05. O treinamento é realizado por até 1000 épocas, e a rede pode ter até 15 camadas escondidas. A taxa de aprendizado é definida como 0.25.
+## Estrutura do Projeto
+A estrutura básica do código se organiza em módulos para tratar das diferentes configurações de execução (Sequencial, OpenMP, MPI) e nas funções de implementação da rede neural e do treinamento via backpropagation. Abaixo, uma visão geral dos principais diretórios e arquivos:
 
-Durante o treinamento, a rede ajusta seus pesos para minimizar o erro entre a saída prevista pela rede e a saída real (ou seja, a classe correta da flor de íris). Se a rede atinge a taxa de acerto desejada antes do número máximo de épocas, o treinamento é interrompido. Caso contrário, o treinamento continua até o número máximo de épocas.
+- `src/`: Código-fonte principal, com versões Sequencial, OpenMP, e MPI do treinamento da rede neural.
+- `Makefile`: Configurações de compilação para cada versão do código.
 
-Após o treinamento, a rede é capaz de classificar corretamente novas amostras de flores de íris com uma alta taxa de acerto.
+## Como Executar
+### Compilação
+Para compilar o código, use o comando:
 
-## Alterações no código
+```bash
+make all VERSION=x
+```
 
-A função principal do código é o void Network::autoTraining(int hidden_layer_limit, double learning_rate_increase){}
-COMPLETAR!!!!
+Substitua `x` pela versão desejada:
+- `Sequencial`: para a execução sequencial.
+- `OpenMP`: para a versão com paralelização utilizando OpenMP.
+- `MPI`: para a versão distribuída utilizando MPI.
 
-## Resultados
+Exemplo de compilação para a versão com OpenMP:
+
+```bash
+make all VERSION=OpenMP
+```
+
+### Execução
+Para executar o código compilado, utilize:
+
+```bash
+./neuralnetwork
+```
+
+## Dependências
+Certifique-se de ter configurado as dependências necessárias para a execução de cada versão. Para compilar e executar o projeto, certifique-se de ter as seguintes dependências instaladas:
+
+1. **Compilador C/C++**: Necessário para compilar o código em qualquer versão. Recomendado `gcc` ou `g++`.
+2. **Make**: Utilizado para gerenciar a compilação do projeto.
+3. **OpenMP**: Necessário para a versão paralela com OpenMP. Geralmente incluído no `gcc` (versão 4.2 ou superior).
+4. **MPI (Message Passing Interface)**: Necessário para a versão distribuída com MPI. Recomendado `MPICH` ou `OpenMPI`.
+
+## Explicação da Aplicação
+### Dataset: Iris
+O dataset Iris é um conjunto de dados amplamente utilizado no aprendizado de máquina. Ele contém 150 amostras divididas igualmente entre três espécies de flores de íris: *Iris setosa*, *Iris virginica* e *Iris versicolor*. Cada amostra possui quatro características: comprimento e largura da sépala, e comprimento e largura da pétala. O objetivo da rede neural é classificar corretamente a espécie de uma flor com base nas suas características.
+
+### Perceptron com Backpropagation
+A rede neural utilizada neste projeto é baseada no modelo de Perceptron, uma das arquiteturas mais simples e eficazes para problemas de classificação linear. Neste caso, a rede neural é composta por uma camada de entrada, uma ou mais camadas ocultas, e uma camada de saída. O treinamento é realizado através do algoritmo de backpropagation, que ajusta os pesos da rede para minimizar o erro entre a saída prevista e a saída desejada.
+
+### Versões de Execução
+- **Sequencial**: Treinamento da rede neural executado em um único núcleo.
+- **OpenMP**: Paralelização baseada em threads, utilizando OpenMP para acelerar o treinamento distribuindo o processamento entre múltiplos núcleos.
+- **MPI**: Implementação distribuída utilizando MPI para execução em ambientes com múltiplas máquinas, dividindo o trabalho entre processos independentes.
+
+## Alterações no Código
+
+1. **Configuração da Camada de Saída**: Alteramos `output_layer_size` de 1 para 3 para permitir múltiplas saídas no problema de classificação.
+2. **Aprimoramento de `autoTraining`**: Automatizamos a busca por configurações ótimas de camada oculta e taxa de aprendizado.
+3. **Saídas Detalhadas em `trainingClassification`**: Adicionamos informações sobre o progresso do treinamento, como taxa de acerto e número de épocas.
+4. **Cálculos Otimizados em `ForwardPropagation` e `BackPropagation`**: Ajustamos o cálculo de ativações e erros para lidar com múltiplas classes de saída.
+5. **Inicialização Simplificada**: Consolidamos a configuração dos parâmetros principais em uma função (`setParameter`).
+6. **Cálculo de Taxa de Acerto**: Otimizamos o cálculo para melhorar a precisão na avaliação de desempenho.
+
+Essas mudanças melhoram a precisão, flexibilidade e eficiência do código, com suporte a paralelização e otimização de parâmetros.
+
+## Conclusão 
+Durante a execução do projeto, foram realizados testes para comparar o desempenho entre as versões. A paralelização permite um treinamento mais rápido nas versões OpenMP e MPI, especialmente em conjuntos de dados maiores ou redes neurais mais complexas.
+
 O código foi executado em um computador com as seguintes especificações:
-
-Arquitetura do Sistema: x86_64 (64 bits)
-Sistema Operacional: Ubuntu 22.04.1
-Versão do Kernel do Linux: 6.8.0-48-generic
-Processador: Intel(R) Core(TM) i7-10700F CPU @ 2.90GHz
-Núcleos por Soquete: 8
-Threads por Núcleo: 2
-Soquetes: 1
-Total de CPUs (Núcleos * Threads por Núcleo * Soquetes): 16
-Memória RAM Total: 15 GiB
-Swap Total: 2,0 GiB
 
 ### Versão Sequencial
 
-Tempo: 0m29,424s
+- **Tempo**: 29.424 segundos
 
 ### Versão OpenMP
 
-Tempo 1 thread : 0m26,720s
-Tempo 2 threads: 0m15,170s
-Tempo 4 threads: 0m8,984s
-Tempo 8 threads: 0m5,292s
+- **Tempo 1 Thread**: 26.720 segundos
+- **Tempo 2 Threads**: 15.170 segundos
+- **Tempo 4 Threads**: 8.984 segundos
+- **Tempo 8 Threads**: 5.292 segundos
 
 ### Versão MPI
 
-Tempo 1 processo  e 4 threads: 0m20,800s
-Tempo 2 processos e 2 threads: 0m12,479s
-Tempo 4 processo  e 1 thread : 0m9,553s
+- **Tempo 1 Processo e 4 Threads**: 20.800 segundos
+- **Tempo 2 Processos e 2 Threads**: 12.479 segundos
+- **Tempo 4 Processos e 0 Threads**: 9.553 segundos
+
+Esses resultados demonstram uma clara redução no tempo de execução com o aumento do nível de paralelismo. A versão OpenMP apresenta uma redução significativa do tempo à medida que o número de threads aumenta, com a execução em 8 threads sendo a mais rápida. A versão MPI também mostra uma diminuição do tempo de execução com o aumento do número de processos, destacando-se a execução com 4 processos como a mais eficiente entre as configurações testadas.

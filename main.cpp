@@ -24,15 +24,8 @@ int main(int argc, char *argv[])
 		taxa_acerto_desejada,
 		tolerancia_maxima_de_erro,
 		maximo_camadas_escondidas,
-		taxa_de_aprendizado
-	);
+		taxa_de_aprendizado);
 
-	neural_network.autoTraining(hidden_layer_limit, learning_rate_increase);
+	neural_network.autoTraining(maximo_camadas_escondidas, taxa_de_aprendizado);
 	return 0;
 }
-
-
-
-
-
-
