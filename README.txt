@@ -1,6 +1,4 @@
-# Projeto 01 - Computação Paralela
-**Grupo:**  
-- Gabriel Vargas  
+# Projeto 01 - Computação Paralela**Grupo:**  - Gabriel Vargas  
 - Leticia Americano  
 - Nilson Deon  
 - Olga Camilla  
@@ -22,29 +20,20 @@ A estrutura básica do código se organiza em módulos para tratar das diferente
 
 ## Como Executar
 ### Compilação
-Para compilar o código, use o comando:
 
-```bash
-make all VERSION=x NUM_THREADS=x
-```
+Codigo Sequencial: make all VERSION=Sequencial
 
-Substitua `x` pela versão desejada:
-- `Sequencial`: para a execução sequencial.
-- `OpenMP`: para a versão com paralelização utilizando OpenMP.
-- `MPI`: para a versão distribuída utilizando MPI.
+Codigo OpenMP : make all VERSION=OpenMP NUM_THREADS=x, sendo x o número de threads desejadas (1, 2, 4 ou 8)
 
-Exemplo de compilação para a versão com OpenMP:
+Codigo MPI : make all VERSION=MPI NUM_THREADS=x, sendo x o número de threads desejadas (1, 2, 4 ou 8)
 
-```bash
-make all VERSION=OpenMP
-```
+### Executar o código:
 
-### Execução
-Para executar o código compilado, utilize:
+Codigo Sequencial: time ./neuralnetwork
 
-```bash
-./neuralnetwork
-```
+Codigo OpenMP : time ./neuralnetwork
+
+Codigo MPI : time mpiexec -np y ./neuralnetwork, sendo y o número de processos desejadas (1, 2 ou 4)
 
 ## Dependências
 Certifique-se de ter configurado as dependências necessárias para a execução de cada versão. Para compilar e executar o projeto, certifique-se de ter as seguintes dependências instaladas:
