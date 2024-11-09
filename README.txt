@@ -42,7 +42,7 @@ A estrutura básica do código se organiza em módulos para tratar das diferente
 Para compilar o código, use o comando:
 
 ```bash
-make all VERSION=x
+make all VERSION=x NUM_THREADS=x
 ```
 
 Substitua `x` pela versão desejada:
@@ -98,6 +98,17 @@ Essas mudanças melhoram a precisão, flexibilidade e eficiência do código, co
 Durante a execução do projeto, foram realizados testes para comparar o desempenho entre as versões. A paralelização permite um treinamento mais rápido nas versões OpenMP e MPI, especialmente em conjuntos de dados maiores ou redes neurais mais complexas.
 
 O código foi executado em um computador com as seguintes especificações:
+
+Arquitetura do Sistema: x86_64 (64 bits)
+Sistema Operacional: Ubuntu 22.04.1
+Versão do Kernel do Linux: 6.8.0-48-generic
+Processador: Intel(R) Core(TM) i7-10700F CPU @ 2.90GHz
+Núcleos por Soquete: 8
+Threads por Núcleo: 2
+Soquetes: 1
+Total de CPUs (Núcleos * Threads por Núcleo * Soquetes): 16
+Memória RAM Total: 15 GiB
+Swap Total: 2,0 GiB
 
 ### Versão Sequencial
 
