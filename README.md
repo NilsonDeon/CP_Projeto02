@@ -1,8 +1,29 @@
 
 # Projeto 01 - Computação Paralela
 
-**Grupo:** Gabriel Vargas, Leticia Americano, Nilson Deon e Olga Camilla  
+**Grupo:**  
+- Gabriel Vargas  
+- Leticia Americano  
+- Nilson Deon  
+- Olga Camilla  
+
 **Data:** Novembro/2024  
+
+---
+
+## Índice
+1. [Descrição](#descrição)
+2. [Estrutura do Projeto](#estrutura-do-projeto)
+3. [Como Executar](#como-executar)
+    - [Compilação](#compilação)
+    - [Execução](#execução)
+4. [Dependências](#dependências)
+5. [Explicação da Aplicação](#explicação-da-aplicação)
+    - [Dataset: Iris](#dataset-iris)
+    - [Perceptron com Backpropagation](#perceptron-com-backpropagation)
+    - [Versões de Execução](#versões-de-execução)
+6. [Alterações no Código](#alterações-no-código)
+7. [Conclusão](#conclusão)
 
 ## Descrição
 Este projeto é uma aplicação de redes neurais treinada com o dataset Iris. Utilizamos três versões para a execução do algoritmo de Perceptron com backpropagation: sequencial, paralela com OpenMP e distribuída com MPI, explorando diferentes abordagens de paralelização para otimizar o treinamento da rede neural.
