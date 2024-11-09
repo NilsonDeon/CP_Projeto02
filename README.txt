@@ -1,5 +1,4 @@
 # Projeto 01 - Computação Paralela
-
 **Grupo:**  
 - Gabriel Vargas  
 - Leticia Americano  
@@ -7,22 +6,6 @@
 - Olga Camilla  
 
 **Data:** Novembro/2024  
-
----
-
-## Índice
-1. [Descrição](#descrição)
-2. [Estrutura do Projeto](#estrutura-do-projeto)
-3. [Como Executar](#como-executar)
-    - [Compilação](#compilação)
-    - [Execução](#execução)
-4. [Dependências](#dependências)
-5. [Explicação da Aplicação](#explicação-da-aplicação)
-    - [Dataset: Iris](#dataset-iris)
-    - [Perceptron com Backpropagation](#perceptron-com-backpropagation)
-    - [Versões de Execução](#versões-de-execução)
-6. [Alterações no Código](#alterações-no-código)
-7. [Conclusão](#conclusão)
 
 ---
 
