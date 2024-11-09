@@ -25,6 +25,8 @@
 6. [Alterações no Código](#alterações-no-código)
 7. [Conclusão](#conclusão)
 
+---
+
 ## Descrição
 Este projeto é uma aplicação de redes neurais treinada com o dataset Iris. Utilizamos três versões para a execução do algoritmo de Perceptron com backpropagation: sequencial, paralela com OpenMP e distribuída com MPI, explorando diferentes abordagens de paralelização para otimizar o treinamento da rede neural.
 
@@ -62,7 +64,7 @@ Para executar o código compilado, utilize:
 ./neuralnetwork
 ```
 
-### Dependências
+## Dependências
 Certifique-se de ter configurado as dependências necessárias para a execução de cada versão. Para compilar e executar o projeto, certifique-se de ter as seguintes dependências instaladas:
 
 1. **Compilador C/C++**: Necessário para compilar o código em qualquer versão. Recomendado `gcc` ou `g++`.
@@ -70,7 +72,7 @@ Certifique-se de ter configurado as dependências necessárias para a execução
 3. **OpenMP**: Necessário para a versão paralela com OpenMP. Geralmente incluído no `gcc` (versão 4.2 ou superior).
 4. **MPI (Message Passing Interface)**: Necessário para a versão distribuída com MPI. Recomendado `MPICH` ou `OpenMPI`.
 
-## Explicação da aplicação
+## Explicação da Aplicação
 ### Dataset: Iris
 O dataset Iris é um conjunto de dados amplamente utilizado no aprendizado de máquina. Ele contém 150 amostras divididas igualmente entre três espécies de flores de íris: *Iris setosa*, *Iris virginica* e *Iris versicolor*. Cada amostra possui quatro características: comprimento e largura da sépala, e comprimento e largura da pétala. O objetivo da rede neural é classificar corretamente a espécie de uma flor com base nas suas características.
 
@@ -82,7 +84,7 @@ A rede neural utilizada neste projeto é baseada no modelo de Perceptron, uma da
 - **OpenMP**: Paralelização baseada em threads, utilizando OpenMP para acelerar o treinamento distribuindo o processamento entre múltiplos núcleos.
 - **MPI**: Implementação distribuída utilizando MPI para execução em ambientes com múltiplas máquinas, dividindo o trabalho entre processos independentes.
 
-## Alterações no código
+## Alterações no Código
 
 1. **Configuração da Camada de Saída**: Alteramos `output_layer_size` de 1 para 3 para permitir múltiplas saídas no problema de classificação.
 2. **Aprimoramento de `autoTraining`**: Automatizamos a busca por configurações ótimas de camada oculta e taxa de aprendizado.
