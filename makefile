@@ -1,36 +1,34 @@
-# Compila a versão sequencial por padrao
-VERSION = Sequencial
-COMPILER = mpic++ -std=c++11 -Wall -g
+# Nome do compilador
+CC = g++
 
+# Flags de compilação
+CFLAGS = -std=c++11 -fopenmp -O2
 
-ifeq ($(VERSION),OpenMP)
-	SRC_DIR = srcOpenMP
-else ifeq ($(VERSION),MPI)
-	SRC_DIR = srcMPI
-else
-	SRC_DIR = srcSequencial
-endif
+# Diretórios
+INCLUDE_DIR = include
+SRC_DIR = srcOpenMP/OpenMP
+OBJ_DIR = obj
+BIN_DIR = bin
 
-EXEC_PROG = neuralnetwork
-BINARIES = $(EXEC_PROG)
+# Arquivos fonte e binário
+SOURCES = $(SRC_DIR)/Dataset.cpp $(SRC_DIR)/Network.cpp main.cpp
+OBJECTS = $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(notdir $(SOURCES)))
+EXEC = $(BIN_DIR)/program
 
-SOURCES := $(shell find $(SRC_DIR) -name '*.cpp')
-OBJECTS = main.o $(SOURCES:.cpp=.o)
+# Regras de compilação
+all: $(EXEC)
 
-all: clean $(EXEC_PROG)
-	@echo Neural Network Build Completed
+$(EXEC): $(OBJECTS)
+	mkdir -p $(BIN_DIR)
+	$(CC) $(CFLAGS) -o $@ $^
 
-%.o: %.cpp
-	$(COMPILER) -c -o $@ $< -w
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 
-$(EXEC_PROG): $(OBJECTS)
-	$(COMPILER) -o $(EXEC_PROG) $(OBJECTS) 
+main.o: main.cpp
+	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c main.cpp -o $(OBJ_DIR)/main.o
 
-# prevents make from getting confused
-.PHONY : run
-run:
-	./$(EXEC_PROG)
-
-.PHONY : clean 
 clean:
-	rm -rf $(EXEC_PROG) $(shell find . -name '*.o')
+	rm -rf $(OBJ_DIR) $(BIN_DIR)
+
