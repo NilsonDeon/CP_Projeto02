@@ -1,6 +1,6 @@
-# Compila a versão sequencial por padrao
+# Configurações gerais
 VERSION = Sequencial
-COMPILER = mpic++ -std=c++11 -Wall -g
+COMPILER = g++ -std=c++11 -Wall -g
 SRC_DIR = srcSequencial
 
 ifeq ($(VERSION),OpenMP)
@@ -9,6 +9,12 @@ ifeq ($(VERSION),OpenMP)
 else ifeq ($(VERSION),MPI)
 	SRC_DIR = srcMPI
 	COMPILER = mpic++ -std=c++11 -Wall -g -DNUM_THREADS=$(NUM_THREADS) -fopenmp
+else ifeq ($(VERSION),Cuda)
+	SRC_DIR = srcCuda
+	COMPILER = nvcc -std=c++14 -g
+else ifeq ($(VERSION),OpenMPGPU)
+	SRC_DIR = srcOpenMPGPU
+	COMPILER = g++ -std=c++14 -Wall -g -fopenmp -foffload=nvptx-none
 else
 	SRC_DIR = srcSequencial
 	COMPILER = mpic++ -std=c++11 -Wall -g
@@ -29,11 +35,12 @@ all: clean $(EXEC_PROG)
 $(EXEC_PROG): $(OBJECTS)
 	$(COMPILER) -o $(EXEC_PROG) $(OBJECTS) 
 
-# prevents make from getting confused
+# Executa o programa
 .PHONY : run
 run:
 	./$(EXEC_PROG)
 
+# Limpa arquivos intermediários
 .PHONY : clean 
 clean:
 	rm -rf $(EXEC_PROG) $(shell find . -name '*.o')
